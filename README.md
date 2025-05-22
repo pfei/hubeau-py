@@ -1,3 +1,10 @@
+> ⚠️ **Pre-Alpha Notice**
+>
+> This project is in a **very early, pre-alpha state**.  
+> The goal is to become a solid, typed, and reference Python client for the Hubeau APIs.
+> Expect rapid changes, breaking updates, and incomplete coverage.
+> Contributions, feedback, and issue reports are very welcome!
+
 # hubeau-py
 
 Pythonic, typed, and modern client for the Hubeau water data APIs.
