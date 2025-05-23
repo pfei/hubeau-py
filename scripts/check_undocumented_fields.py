@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 def fetch_sample(url: str, n: int = 10, **params: Any) -> list[dict[str, Any]]:
     params["size"] = n
-    resp = httpx.get(url, params=params, timeout=10)
+    resp = httpx.get(url, params=params, timeout=30)
     resp.raise_for_status()
     data = resp.json().get("data", [])
     if not isinstance(data, list):
@@ -54,7 +54,12 @@ def check_undocumented_fields(
 
 
 if __name__ == "__main__":
-    from hubeau_py.models.qualite_rivieres import AnalysePc, ConditionEnvironnementalePc
+    from hubeau_py.models.qualite_rivieres import (
+        AnalysePc,
+        ConditionEnvironnementalePc,
+        OperationPc,
+        StationPc,
+    )
 
     endpoints: dict[str, tuple[str, type[BaseModel]]] = {
         "analyse_pc": (
@@ -64,6 +69,14 @@ if __name__ == "__main__":
         "condition_environnementale_pc": (
             "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/condition_environnementale_pc",
             ConditionEnvironnementalePc,
+        ),
+        "operation_pc": (
+            "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/operation_pc",
+            OperationPc,
+        ),
+        "station_pc": (
+            "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/station_pc",
+            StationPc,
         ),
     }
 

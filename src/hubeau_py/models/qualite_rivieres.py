@@ -1,6 +1,107 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel
+
+T = TypeVar("T")
+
+
+# --- Envelope ---
+class HubeauEnvelope(BaseModel, Generic[T]):
+    count: int
+    first: Optional[str] = None
+    last: Optional[str] = None
+    prev: Optional[str] = None
+    next: Optional[str] = None
+    api_version: Optional[str] = None
+    data: List[T]
+
+
+# --- GeoJSON/Spatial Models ---
+LngLat = List[float]  # [longitude, latitude]
+LngLatAlt = List[float]  # [longitude, latitude, altitude] (if present)
+
+
+class CrsProperties(BaseModel):
+    name: str
+
+
+class Crs(BaseModel):
+    type: str  # Usually "name"
+    properties: CrsProperties
+
+
+class Point(BaseModel):
+    type: str  # "Point"
+    coordinates: LngLat
+
+
+class MultiPoint(BaseModel):
+    type: str  # "MultiPoint"
+    coordinates: List[LngLat]
+
+
+class LineString(BaseModel):
+    type: str  # "LineString"
+    coordinates: List[LngLat]
+
+
+class MultiLineString(BaseModel):
+    type: str  # "MultiLineString"
+    coordinates: List[List[LngLat]]
+
+
+class Polygon(BaseModel):
+    type: str  # "Polygon"
+    coordinates: List[List[LngLat]]
+
+
+class MultiPolygon(BaseModel):
+    type: str  # "MultiPolygon"
+    coordinates: List[List[List[LngLat]]]
+
+
+class GeometryCollection(BaseModel):
+    type: str  # "GeometryCollection"
+    geometries: List[
+        Union[
+            "Point",
+            "MultiPoint",
+            "LineString",
+            "MultiLineString",
+            "Polygon",
+            "MultiPolygon",
+        ]
+    ]
+
+
+Geometry = Union[
+    Point,
+    MultiPoint,
+    LineString,
+    MultiLineString,
+    Polygon,
+    MultiPolygon,
+    GeometryCollection,
+]
+
+
+class Feature(BaseModel):
+    type: str  # "Feature"
+    bbox: Optional[List[float]] = None
+    crs: Optional[Crs] = None
+    geometry: Optional[Geometry] = None
+    id: Optional[Union[str, int]] = None
+    properties: Optional[Dict[str, Any]] = None
+
+
+class FeatureCollection(BaseModel):
+    type: str  # "FeatureCollection"
+    features: List[Feature]
+    bbox: Optional[List[float]] = None
+    crs: Optional[Crs] = None
+
+
+# --- Main Data Models ---
 
 
 class AnalysePc(BaseModel):
@@ -25,7 +126,7 @@ class AnalysePc(BaseModel):
     code_groupe_parametre: Optional[List[str]] = None
     libelle_groupe_parametre: Optional[List[str]] = None
     uri_groupe_parametre: Optional[List[str]] = None
-    resultat: Optional[str] = None
+    resultat: Optional[Union[str, float, int]] = None
     code_unite: Optional[str] = None
     symbole_unite: Optional[str] = None
     uri_unite: Optional[str] = None
@@ -75,9 +176,7 @@ class AnalysePc(BaseModel):
     code_point_eau_surface: Optional[str] = None
     code_analyse: Optional[str] = None
     code_banque_reference: Optional[str] = None
-    geometry: Optional[Dict[str, Any]] = (
-        None  # Not in docs, but present in API responses
-    )
+    geometry: Optional[Geometry] = None  # Use GeoJSON type, forward ref if needed
 
 
 class ConditionEnvironnementalePc(BaseModel):
@@ -124,19 +223,114 @@ class ConditionEnvironnementalePc(BaseModel):
     code_point_eau_surface: Optional[str] = None
     code_prelevement: Optional[str] = None
     date_maj: Optional[str] = None
-    geometry: Optional[Dict[str, Any]] = (
-        None  # Not in docs, but present in API responses
-    )
+    geometry: Optional[Geometry] = None  # Use GeoJSON type, forward ref if needed
 
 
 class OperationPc(BaseModel):
-    code_station: str
-    date_operation: str
-    type_operation: Optional[str] = None
-    # Add more fields as needed
+    code_station: Optional[str] = None
+    libelle_station: Optional[str] = None
+    uri_station: Optional[str] = None
+    longitude: Optional[float] = None
+    latitude: Optional[float] = None
+    x_prelevement: Optional[float] = None
+    y_prelevement: Optional[float] = None
+    code_projection: Optional[str] = None
+    libelle_projection: Optional[str] = None
+    code_support: Optional[str] = None
+    libelle_support: Optional[str] = None
+    uri_support: Optional[str] = None
+    code_methode: Optional[str] = None
+    nom_methode: Optional[str] = None
+    uri_methode: Optional[str] = None
+    date_prelevement: Optional[str] = None
+    date_fin: Optional[str] = None
+    heure_fin: Optional[str] = None
+    heure_prelevement: Optional[str] = None
+    code_zone_verticale_prospectee: Optional[str] = None
+    mnemo_zone_verticale_prospectee: Optional[str] = None
+    profondeur: Optional[float] = None
+    code_difficulte: Optional[str] = None
+    mnemo_difficulte: Optional[str] = None
+    code_accreditation: Optional[str] = None
+    mnemo_accreditation: Optional[str] = None
+    agrement: Optional[str] = None
+    code_finalite: Optional[str] = None
+    libelle_finalite: Optional[str] = None
+    commentaires: Optional[str] = None
+    code_reseau: Optional[List[str]] = None
+    nom_reseau: Optional[List[str]] = None
+    uri_reseau: Optional[List[str]] = None
+    code_producteur: Optional[str] = None
+    nom_producteur: Optional[str] = None
+    uri_producteur: Optional[str] = None
+    code_preleveur: Optional[str] = None
+    nom_preleveur: Optional[str] = None
+    uri_preleveur: Optional[str] = None
+    code_operation: Optional[str] = None
+    code_prelevement: Optional[str] = None
+    code_point_eau_surface: Optional[str] = None
+    code_banque_reference: Optional[str] = None
+    geometry: Optional[Geometry] = None  # Use GeoJSON type, forward ref if needed
 
 
 class StationPc(BaseModel):
-    code_station: str
+    code_station: Optional[str] = None
+    libelle_station: Optional[str] = None
+    uri_station: Optional[str] = None
+    durete: Optional[float] = None
+    coordonnee_x: Optional[float] = None
+    coordonnee_y: Optional[float] = None
+    code_projection: Optional[str] = None
+    libelle_projection: Optional[str] = None
+    longitude: Optional[float] = None
+    latitude: Optional[float] = None
+    code_commune: Optional[str] = None
     libelle_commune: Optional[str] = None
-    # Add more fields as needed
+    code_departement: Optional[str] = None
+    libelle_departement: Optional[str] = None
+    code_region: Optional[str] = None
+    libelle_region: Optional[str] = None
+    code_cours_eau: Optional[str] = None
+    nom_cours_eau: Optional[str] = None
+    uri_cours_eau: Optional[str] = None
+    nom_masse_deau: Optional[str] = None
+    code_masse_deau: Optional[str] = None
+    code_eu_masse_deau: Optional[str] = None
+    uri_masse_deau: Optional[str] = None
+    code_eu_sous_bassin: Optional[str] = None
+    nom_sous_bassin: Optional[str] = None
+    uri_sous_bassin: Optional[str] = None
+    code_bassin: Optional[str] = None
+    code_eu_bassin: Optional[str] = None
+    nom_bassin: Optional[str] = None
+    uri_bassin: Optional[str] = None
+    type_entite_hydro: Optional[str] = None
+    commentaire: Optional[str] = None
+    date_creation: Optional[str] = None
+    date_arret: Optional[str] = None
+    date_maj_information: Optional[str] = None
+    finalite: Optional[str] = None
+    localisation_precise: Optional[str] = None
+    nature: Optional[str] = None
+    altitude_point_caracteristique: Optional[float] = None
+    point_kilometrique: Optional[float] = None
+    premier_mois_annee_etiage: Optional[Union[str, int]] = None
+    superficie_bassin_versant_reel: Optional[float] = None
+    superficie_bassin_versant_topo: Optional[float] = None
+    geometry: Optional["Geometry"] = None  # Use GeoJSON type, forward ref if needed
+
+
+# --- Envelope Aliases ---
+JsonAnalysePc = HubeauEnvelope[AnalysePc]
+JsonConditionEnvironnementalePc = HubeauEnvelope[ConditionEnvironnementalePc]
+JsonOperationPc = HubeauEnvelope[OperationPc]
+JsonStationPc = HubeauEnvelope[StationPc]
+
+# # --- Pydantic Forward Reference Resolution ---
+# GeometryCollection.model_rebuild()
+# Feature.model_rebuild()
+# FeatureCollection.model_rebuild()
+# AnalysePc.model_rebuild()
+# ConditionEnvironnementalePc.model_rebuild()
+# OperationPc.model_rebuild()
+# StationPc.model_rebuild()
