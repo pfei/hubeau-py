@@ -162,6 +162,23 @@ Feel free to adjust these settings for your personal workflow if needed.
 >
 > For more details, see the [VS Code documentation on settings](https://code.visualstudio.com/docs/configure/settings).
 
+## Inspect Scripts
+
+The [`scripts/inspect_*.py`](scripts/) scripts allow you to quickly explore the field types and example values returned by each Hubeau API endpoint. These tools are useful for:
+
+- Understanding the structure of API responses
+- Maintaining and updating Pydantic models
+- Debugging data issues or undocumented fields
+
+**Usage:**
+
+```python
+$ poetry run python scripts/inspect_station_pc.py
+$ poetry run python scripts/inspect_operation_pc.py
+```
+
+You can adjust the `n` parameter in each script (edit the script and change `n=10`, for example) to control how many records are fetched and inspected.
+
 ## License
 
 MIT License © Pierre Feilles
