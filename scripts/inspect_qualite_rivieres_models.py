@@ -1,3 +1,6 @@
+# This is a manual check script, not a pytest test module.
+# Run with: python scripts/check_qualite_rivieres_models.py
+
 from typing import Any, Dict, Type
 
 import httpx
