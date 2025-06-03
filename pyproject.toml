@@ -24,6 +24,7 @@ mypy = "^1.10.0"
 notebook = "^7.2.0"
 jupyter = "^1.1.1"
 ipython = "^8.24"
+rich = "^14.0.0"
 
 [build-system]
 requires = ["poetry-core"]
