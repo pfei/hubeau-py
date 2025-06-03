@@ -1,0 +1,93 @@
+from typing import Any, Dict, List
+
+import httpx
+
+from hubeau_py.models.qualite_rivieres import AnalysePc, StationPc
+
+# Define endpoints
+ENDPOINTS = {
+    "analyse_pc": ("https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/analyse_pc"),
+    "condition_environnementale_pc": (
+        "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/condition_environnementale_pc"
+    ),
+    "operation_pc": (
+        "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/operation_pc"
+    ),
+    "station_pc": ("https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/station_pc"),
+}
+
+
+def get_endpoint_summary(
+    endpoint: str, url: str, sample_size: int = 1
+) -> Dict[str, Any]:
+    """Fetch a summary of an endpoint: count and a sample record."""
+    try:
+        resp = httpx.get(url, params={"size": sample_size})
+        resp.raise_for_status()
+        data = resp.json()
+        return {
+            "endpoint": endpoint,
+            "count": data.get("count", 0),
+            "sample_record": data.get("data", [None])[0],
+        }
+    except Exception as e:
+        return {
+            "endpoint": endpoint,
+            "error": str(e),
+        }
+
+
+def summarize_endpoints(
+    endpoints: Dict[str, str], sample_size: int = 1
+) -> List[Dict[str, Any]]:
+    """Summarize all endpoints."""
+    return [
+        get_endpoint_summary(name, url, sample_size) for name, url in endpoints.items()
+    ]
+
+
+def print_sample_record(summaries: List[Dict[str, Any]], endpoint: str) -> None:
+    summary = next(s for s in summaries if s["endpoint"] == endpoint)
+    print(f"Sample record for {endpoint}:")
+    print(summary["sample_record"])
+
+
+def fetch_stations(size: int = 10) -> List[StationPc]:
+    url = ENDPOINTS["station_pc"]
+    resp = httpx.get(url, params={"size": size}, timeout=60)
+    resp.raise_for_status()
+    data = resp.json().get("data", [])
+    return [StationPc(**station) for station in data]
+
+
+def fetch_analyses(code_station: str | None, size: int = 10) -> list[AnalysePc]:
+    if code_station is None:
+        return []
+    url = ENDPOINTS["analyse_pc"]
+    resp = httpx.get(
+        url, params={"code_station": code_station, "size": size}, timeout=60
+    )
+    resp.raise_for_status()
+    data = resp.json().get("data", [])
+    return [AnalysePc(**analysis) for analysis in data]
+
+
+def main() -> None:
+    print("Fetching stations...")
+    stations = fetch_stations(10)
+    print(f"Found {len(stations)} stations.")
+
+    if not stations:
+        print("No stations found.")
+        return
+
+    for station in stations:
+        analyses = fetch_analyses(station.code_station)
+        print(f"\nStation: {station.libelle_station} (code: {station.code_station})")
+        print(f"Number of analyses: {len(analyses)}")
+        if analyses:
+            print("First analysis parameter:", analyses[0].libelle_parametre)
+
+
+if __name__ == "__main__":
+    main()
