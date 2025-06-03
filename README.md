@@ -29,7 +29,7 @@ Pythonic, typed, and modern client for the Hubeau water data APIs.
 ```python
 from hubeau_py.client import HubeauClient
 client = HubeauClient()
-stations = client.get_stations("Agen")
+stations = client.get_stations("Paris") # Example: get stations by name for the Qualité Rivières API
 print(stations)
 ```
 
@@ -164,20 +164,24 @@ Feel free to adjust these settings for your personal workflow if needed.
 
 ## Inspect Scripts
 
-The [`scripts/inspect_*.py`](scripts/) scripts allow you to quickly explore the field types and example values returned by each Hubeau API endpoint. These tools are useful for:
+Scripts for exploring and inspecting the Hubeau APIs are organized by API in the `scripts/` directory. For example:
 
-- Understanding the structure of API responses
-- Maintaining and updating Pydantic models
-- Debugging data issues or undocumented fields
+- **qualite_rivieres/**: Scripts for the "Qualité Rivières" API.
+  - `explore.py`: Interactive exploration of the API.
+  - `inspect_*.py`: Inspection scripts for specific endpoints and models.
+  - `check_undocumented_fields.py`: Checks for undocumented fields in API responses.
 
 **Usage:**
 
 ```python
-$ poetry run python scripts/inspect_station_pc.py
-$ poetry run python scripts/inspect_operation_pc.py
+$ poetry run python scripts/qualite_rivieres/inspect_station_pc.py
+$ poetry run python scripts/qualite_rivieres/inspect_operation_pc.py
 ```
 
 You can adjust the `n` parameter in each script (edit the script and change `n=10`, for example) to control how many records are fetched and inspected.
+
+> **Note:**  
+> As support for more Hubeau APIs is added, new subdirectories will be created under `scripts/` for each API.
 
 ## License
 
