@@ -51,3 +51,6 @@ Thumbs.db
 
 # Ignore mypy daemon status file (auto-generated, local only)
 .dmypy.json
+
+# data generated during exploration
+data/

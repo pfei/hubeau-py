@@ -2,7 +2,7 @@ from typing import Any, Dict, List
 
 import httpx
 
-from hubeau_py.models.qualite_rivieres import AnalysePc, StationPc
+from scripts.qualite_rivieres.api_utils import fetch_analyses, fetch_stations
 
 # Define endpoints
 ENDPOINTS = {
@@ -50,26 +50,6 @@ def print_sample_record(summaries: List[Dict[str, Any]], endpoint: str) -> None:
     summary = next(s for s in summaries if s["endpoint"] == endpoint)
     print(f"Sample record for {endpoint}:")
     print(summary["sample_record"])
-
-
-def fetch_stations(size: int = 10) -> List[StationPc]:
-    url = ENDPOINTS["station_pc"]
-    resp = httpx.get(url, params={"size": size}, timeout=60)
-    resp.raise_for_status()
-    data = resp.json().get("data", [])
-    return [StationPc(**station) for station in data]
-
-
-def fetch_analyses(code_station: str | None, size: int = 10) -> list[AnalysePc]:
-    if code_station is None:
-        return []
-    url = ENDPOINTS["analyse_pc"]
-    resp = httpx.get(
-        url, params={"code_station": code_station, "size": size}, timeout=60
-    )
-    resp.raise_for_status()
-    data = resp.json().get("data", [])
-    return [AnalysePc(**analysis) for analysis in data]
 
 
 def main() -> None:
