@@ -4,11 +4,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
+import httpx
 import pandas as pd
 from tqdm import tqdm
 
 from hubeau_py.models.qualite_rivieres import AnalysePc, StationPc
-from scripts.qualite_rivieres.api_utils import fetch_analyses, fetch_stations
+from scripts.qualite_rivieres.api_utils import fetch_analyses
 
 OUTPUT_DIR: Path = Path("data/exploration/qualite_rivieres")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -102,13 +103,36 @@ def save_report(results: List[Dict[str, Any]], output_dir: Path) -> None:
         f.write(report)
 
 
+def get_total_station_count() -> int:
+    url = "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/station_pc"
+    resp = httpx.get(url, params={"size": 1}, timeout=60)
+    resp.raise_for_status()
+    data = resp.json()
+    return int(data["count"])
+
+
+def fetch_all_stations(total: int, batch_size: int = 1000) -> List[StationPc]:
+    """Fetch all stations using pagination."""
+    stations: List[StationPc] = []
+    url = "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/station_pc"
+    for start in tqdm(range(0, total, batch_size), desc="Fetching stations"):
+        resp = httpx.get(url, params={"start": start, "size": batch_size}, timeout=60)
+        resp.raise_for_status()
+        data = resp.json()["data"]
+        stations.extend(StationPc(**s) for s in data)
+    return stations
+
+
 def main() -> None:
     start_time = time.time()
+    total_stations = get_total_station_count()
+    print(f"WARNING: There are {total_stations} stations available in the database.")
+    print("Processing all stations may take a long time!\n")
     print("Fetching stations...")
-    stations: List[StationPc] = fetch_stations(1000)
+    stations: List[StationPc] = fetch_all_stations(total_stations)
     results: List[Dict[str, Any]] = []
     print("Analyzing stations...")
-    for station in tqdm(stations):
+    for station in tqdm(stations, desc="Analyzing stations"):
         analyses: List[AnalysePc] = fetch_analyses(station.code_station, 1000)
         result: Dict[str, Any] = analyze_station_tsa(station, analyses)
         results.append(result)
