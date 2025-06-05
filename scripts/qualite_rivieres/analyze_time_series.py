@@ -133,9 +133,15 @@ def main() -> None:
     results: List[Dict[str, Any]] = []
     print("Analyzing stations...")
     for station in tqdm(stations, desc="Analyzing stations"):
-        analyses: List[AnalysePc] = fetch_analyses(station.code_station, 1000)
-        result: Dict[str, Any] = analyze_station_tsa(station, analyses)
-        results.append(result)
+        try:
+            analyses: List[AnalysePc] = fetch_analyses(station.code_station, 1000)
+            result: Dict[str, Any] = analyze_station_tsa(station, analyses)
+            results.append(result)
+        except Exception as e:
+            print(f"Error processing station {station.code_station}: {e}")
+            results.append(
+                {"station": station.code_station, "tsa_candidates": [], "error": str(e)}
+            )
     print("Saving report...")
     save_report(results, OUTPUT_DIR)
     elapsed = time.time() - start_time
