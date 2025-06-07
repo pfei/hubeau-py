@@ -1,6 +1,10 @@
 import json
+import logging
+import signal
+import sys
 import time
 from datetime import datetime
+from multiprocessing import Pool
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -15,44 +19,82 @@ OUTPUT_DIR: Path = Path("data/exploration/qualite_rivieres")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def analyze_station_tsa(
-    station: StationPc, analyses: List[AnalysePc]
-) -> Dict[str, Any]:
+log_file = OUTPUT_DIR / "station_tsa.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(log_file, mode="a"),
+    ],
+)
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
+
+def flush_logs_on_exit(signum, frame) -> None:  # type: ignore[no-untyped-def]
+    logging.shutdown()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, flush_logs_on_exit)
+
+
+def analyze_station_tsa(station: StationPc) -> Dict[str, Any]:
     """Analyze time series feasibility for a station."""
-    if not analyses:
-        return {"station": station.code_station, "tsa_candidates": []}
-    param_data: Dict[str, List[AnalysePc]] = {}
-    for a in analyses:
-        param = a.libelle_parametre
-        if param is None:
-            continue  # Skip analyses without a parameter name
-        if param not in param_data:
-            param_data[param] = []
-        param_data[param].append(a)
-    tsa_candidates: List[Dict[str, Any]] = []
-    for param, records in param_data.items():
-        dates: List[datetime] = []
-        for r in records:
-            if r.date_prelevement is not None:
-                dates.append(datetime.strptime(r.date_prelevement, "%Y-%m-%d"))
-        if not dates:
-            continue
-        min_date: datetime = min(dates)
-        max_date: datetime = max(dates)
-        n_measurements: int = len(dates)
-        tsa_candidates.append(
-            {
-                "parameter": param,
-                "n_measurements": n_measurements,
-                "min_date": min_date.isoformat(),
-                "max_date": max_date.isoformat(),
-                "time_span_days": (max_date - min_date).days,
-            }
+    try:
+        logging.info(
+            f"Processing station: {station.libelle_station or 'unknown'} "
+            f"(code: {station.code_station or 'unknown'})"
         )
-    return {
-        "station": station.code_station,
-        "tsa_candidates": tsa_candidates,
-    }
+        if station.code_station is None:
+            return {"station": station.code_station, "tsa_candidates": []}
+        analyses: List[AnalysePc] = fetch_analyses(station.code_station, 1000)
+        if not analyses:
+            return {"station": station.code_station, "tsa_candidates": []}
+        param_data: Dict[str, List[AnalysePc]] = {}
+        for a in analyses:
+            if a.libelle_parametre is None:
+                continue
+            # Skip analyses with zero or missing resultat
+            if getattr(a, "resultat", None) in (None, 0, "0", ""):
+                continue
+            if a.libelle_parametre not in param_data:
+                param_data[a.libelle_parametre] = []
+            param_data[a.libelle_parametre].append(a)
+        tsa_candidates: List[Dict[str, Any]] = []
+        for param, records in param_data.items():
+            dates: List[datetime] = []
+            for r in records:
+                if r.date_prelevement is not None:
+                    try:
+                        dates.append(datetime.strptime(r.date_prelevement, "%Y-%m-%d"))
+                    except ValueError:
+                        continue
+            if not dates:
+                continue
+            min_date: datetime = min(dates)
+            max_date: datetime = max(dates)
+            n_measurements: int = len(dates)
+            tsa_candidates.append(
+                {
+                    "parameter": param,
+                    "n_measurements": n_measurements,
+                    "min_date": min_date.isoformat(),
+                    "max_date": max_date.isoformat(),
+                    "time_span_days": (max_date - min_date).days,
+                }
+            )
+        return {
+            "station": station.code_station,
+            "tsa_candidates": tsa_candidates,
+        }
+    except Exception as e:
+        logging.error(
+            f"Error processing station {station.code_station or 'unknown'}: {e}"
+        )
+        return {"station": station.code_station, "tsa_candidates": [], "error": str(e)}
 
 
 def save_report(results: List[Dict[str, Any]], output_dir: Path) -> None:
@@ -73,7 +115,8 @@ def save_report(results: List[Dict[str, Any]], output_dir: Path) -> None:
                 }
             )
     df: pd.DataFrame = pd.DataFrame(rows)
-    df.to_csv(output_dir / "tsa_analysis.csv", index=False)
+    # Use semicolon as delimiter to avoid issues with commas in parameter names
+    df.to_csv(output_dir / "tsa_analysis.csv", sep=";", index=False)
 
     try:
         from tabulate import tabulate  # noqa: F401  # type: ignore[import-untyped]
@@ -130,18 +173,16 @@ def main() -> None:
     print("Processing all stations may take a long time!\n")
     print("Fetching stations...")
     stations: List[StationPc] = fetch_all_stations(total_stations)
-    results: List[Dict[str, Any]] = []
-    print("Analyzing stations...")
-    for station in tqdm(stations, desc="Analyzing stations"):
-        try:
-            analyses: List[AnalysePc] = fetch_analyses(station.code_station, 1000)
-            result: Dict[str, Any] = analyze_station_tsa(station, analyses)
-            results.append(result)
-        except Exception as e:
-            print(f"Error processing station {station.code_station}: {e}")
-            results.append(
-                {"station": station.code_station, "tsa_candidates": [], "error": str(e)}
+    print("Analyzing stations in parallel...")
+    # Use multiprocessing to parallelize station analysis
+    with Pool() as pool:  # Defaults to number of available CPU cores[1]
+        results = list(
+            tqdm(
+                pool.imap(analyze_station_tsa, stations),
+                total=len(stations),
+                desc="Analyzing stations",
             )
+        )
     print("Saving report...")
     save_report(results, OUTPUT_DIR)
     elapsed = time.time() - start_time
@@ -149,4 +190,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+
     main()

@@ -62,6 +62,12 @@ def main() -> None:
         return
 
     for station in stations:
+        if station.code_station is None:
+            print(
+                f"\nStation: {station.libelle_station} "
+                f"(code: None) - Skipping, no code_station"
+            )
+            continue
         analyses = fetch_analyses(station.code_station)
         print(f"\nStation: {station.libelle_station} (code: {station.code_station})")
         print(f"Number of analyses: {len(analyses)}")

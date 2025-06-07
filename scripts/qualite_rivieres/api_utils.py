@@ -1,10 +1,11 @@
-# scripts/qualite_rivieres/api_utils.py
-
-from typing import List, Optional
+import logging
+from typing import List
 
 import httpx
 
 from hubeau_py.models.qualite_rivieres import AnalysePc, StationPc
+
+logger = logging.getLogger(__name__)
 
 ENDPOINTS = {
     "station_pc": "https://hubeau.eaufrance.fr/api/v2/qualite_rivieres/station_pc",
@@ -21,14 +22,38 @@ def fetch_stations(size: int = 10) -> List[StationPc]:
     return [StationPc(**station) for station in data]
 
 
-def fetch_analyses(code_station: Optional[str], size: int = 10) -> List[AnalysePc]:
-    """Fetch analyses for a station, up to size."""
-    if code_station is None:
-        return []
+def fetch_analyses(station_code: str, batch_size: int = 1000) -> List[AnalysePc]:
+    """Fetch ALL analyses for a station with pagination handling."""
     url = ENDPOINTS["analyse_pc"]
-    resp = httpx.get(
-        url, params={"code_station": code_station, "size": size}, timeout=60
-    )
-    resp.raise_for_status()
-    data = resp.json().get("data", [])
-    return [AnalysePc(**analysis) for analysis in data]
+    analyses = []
+    start = 0
+
+    while True:
+        try:
+            resp = httpx.get(
+                url,
+                params={
+                    "code_station": station_code,
+                    "size": batch_size,
+                    "start": start,
+                },
+                timeout=30,
+            )
+            resp.raise_for_status()
+            data = resp.json().get("data", [])
+
+            if not data:  # No more results
+                break
+
+            analyses.extend([AnalysePc(**item) for item in data])
+            start += batch_size
+
+            # Break if we get fewer results than requested
+            if len(data) < batch_size:
+                break
+
+        except Exception as e:
+            logger.error(f"Error fetching analyses for station {station_code}: {e}")
+            break
+
+    return analyses
