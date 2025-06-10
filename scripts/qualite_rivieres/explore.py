@@ -25,10 +25,11 @@ def get_endpoint_summary(
         resp = httpx.get(url, params={"size": sample_size})
         resp.raise_for_status()
         data = resp.json()
+        sample_data = data.get("data", [])
         return {
             "endpoint": endpoint,
             "count": data.get("count", 0),
-            "sample_record": data.get("data", [None])[0],
+            "sample_record": sample_data[0] if sample_data else None,
         }
     except Exception as e:
         return {
@@ -54,25 +55,35 @@ def print_sample_record(summaries: List[Dict[str, Any]], endpoint: str) -> None:
 
 def main() -> None:
     print("Fetching stations...")
-    stations = fetch_stations(10)
-    print(f"Found {len(stations)} stations.")
+    try:
+        stations = fetch_stations(10)
+        print(f"Found {len(stations)} stations.")
 
-    if not stations:
-        print("No stations found.")
-        return
+        if not stations:
+            print("No stations found.")
+            return
 
-    for station in stations:
-        if station.code_station is None:
-            print(
-                f"\nStation: {station.libelle_station} "
-                f"(code: None) - Skipping, no code_station"
-            )
-            continue
-        analyses = fetch_analyses(station.code_station)
-        print(f"\nStation: {station.libelle_station} (code: {station.code_station})")
-        print(f"Number of analyses: {len(analyses)}")
-        if analyses:
-            print("First analysis parameter:", analyses[0].libelle_parametre)
+        for station in stations:
+            if station.code_station is None:
+                print(
+                    f"\nStation: {station.libelle_station} "
+                    f"(code: None) - Skipping, no code_station"
+                )
+                continue
+            try:
+                analyses = list(fetch_analyses(station.code_station))
+                print(
+                    f"\nStation: {station.libelle_station} (code: {station.code_station})"
+                )
+                print(f"Number of analyses: {len(analyses)}")
+                if analyses:
+                    print("First analysis parameter:", analyses[0].libelle_parametre)
+            except Exception as e:
+                print(
+                    f"Error fetching analyses for station {station.code_station}: {e}"
+                )
+    except Exception as e:
+        print(f"Error fetching stations: {e}")
 
 
 if __name__ == "__main__":

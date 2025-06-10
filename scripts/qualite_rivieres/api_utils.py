@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import Iterator, List, Optional
 
 import httpx
 
@@ -22,13 +22,35 @@ def fetch_stations(size: int = 10) -> List[StationPc]:
     return [StationPc(**station) for station in data]
 
 
-def fetch_analyses(station_code: str, batch_size: int = 1000) -> List[AnalysePc]:
-    """Fetch ALL analyses for a station with pagination handling."""
+def fetch_analyses(
+    station_code: str, batch_size: int = 1000, debug_limit: Optional[int] = None
+) -> Iterator[AnalysePc]:
+    """Fetch analyses for a station one at a time using an iterator.
+
+    This function yields individual AnalysePc objects instead of accumulating them in memory.
+    Each analysis is yielded as soon as it's fetched and processed.
+
+    Args:
+        station_code: The code of the station to fetch analyses for
+        batch_size: Number of analyses to fetch per API call
+        debug_limit: If set, limits the total number of analyses fetched (for debugging)
+    """
     url = ENDPOINTS["analyse_pc"]
-    analyses = []
     start = 0
+    total_fetched = 0
 
     while True:
+        if debug_limit is not None and total_fetched >= debug_limit:
+            print(
+                f"Debug limit of {debug_limit} analyses reached for station {station_code}"
+            )
+            break
+
+        print(
+            f"Fetching analyses for station {station_code}, "
+            f"batch {start} to {start + batch_size - 1}..."
+        )
+
         try:
             resp = httpx.get(
                 url,
@@ -45,15 +67,19 @@ def fetch_analyses(station_code: str, batch_size: int = 1000) -> List[AnalysePc]
             if not data:  # No more results
                 break
 
-            analyses.extend([AnalysePc(**item) for item in data])
-            start += batch_size
+            # Yield each analysis individually
+            for item in data:
+                if debug_limit is not None and total_fetched >= debug_limit:
+                    break
+                yield AnalysePc(**item)
+                total_fetched += 1
 
             # Break if we get fewer results than requested
             if len(data) < batch_size:
                 break
 
+            start += batch_size
+
         except Exception as e:
             logger.error(f"Error fetching analyses for station {station_code}: {e}")
             break
-
-    return analyses

@@ -9,6 +9,17 @@
 
 Pythonic, typed, and modern client for the Hubeau water data APIs.
 
+## API Coverage and Status
+
+| API Name              | Status             | Notes                                                                                                                                                                                               |
+| --------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Qualité Rivières**  | ⚠️ Limited Support | Initial implementation with known limitations. API has pagination issues and high error rates (~60%) when querying large datasets. Best used for targeted queries rather than bulk data extraction. |
+| **Hydrologie**        | 🚧 In Progress     | Currently being implemented.                                                                                                                                                                        |
+| **Other Hubeau APIs** | 📅 Planned         | Will be added in future releases.                                                                                                                                                                   |
+
+> **Note on Qualité Rivières API:**  
+> Our exploration revealed significant rate limiting and stability issues when attempting exhaustive data extraction. The API works well for targeted queries but may not be suitable for comprehensive data analysis across all stations. See the `scripts/qualite_rivieres/` directory for exploration tools and findings.
+
 ## Features
 
 - Typed, Pythonic client for the Hubeau water data APIs
