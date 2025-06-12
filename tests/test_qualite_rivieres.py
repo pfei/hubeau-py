@@ -20,27 +20,23 @@ def api_test_notice() -> None:
 
 
 def test_get_stations() -> None:
-    """Test that get_stations returns a list of models with required fields."""
     client = HubeauClient()
-    stations = client.get_stations(size=10)
+    stations = client.qualite_rivieres.get_stations(libelle_commune="Paris", size=1)
     assert isinstance(stations, list)
-    # If there are stations, check the first one has required fields
     if stations:
         assert hasattr(stations[0], "code_station")
         assert hasattr(stations[0], "libelle_station")
 
 
 def test_get_analyses() -> None:
-    """Test that get_analyses returns a list of models with required fields."""
     client = HubeauClient()
-    # First, get a station to use as example
-    stations = client.get_stations(size=1)
+    stations = client.qualite_rivieres.get_stations(libelle_commune="Paris", size=1)
     if not stations:
         pytest.skip("No stations available for testing")
-    # Get analyses for the first station
-    analyses = client.get_analyses(code_station=stations[0].code_station, size=10)
+    analyses = client.qualite_rivieres.get_analyses(
+        code_station=stations[0].code_station, size=1, max_records=1
+    )
     assert isinstance(analyses, list)
-    # If there are analyses, check the first one has required fields
     if analyses:
         assert hasattr(analyses[0], "code_station")
         assert hasattr(analyses[0], "libelle_station")
