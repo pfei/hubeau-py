@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -43,44 +43,44 @@ class Site(BaseModel):
 
 class Station(BaseModel):
     altitude_ref_alti_station: Optional[float] = None
-    code_commune_station: Optional[str] = None
-    code_cours_eau: Optional[str] = None
-    code_departement: Optional[str] = None
+    code_commune_station: str
+    code_cours_eau: str
+    code_departement: str
     code_finalite_station: Optional[str] = None
-    code_projection: Optional[int] = None  # or str, check API
-    code_regime_station: Optional[str] = None
-    code_region: Optional[str] = None
-    code_sandre_reseau_station: Optional[str] = None
-    code_site: Optional[str] = None
-    code_station: Optional[str] = None
-    code_systeme_alti_site: Optional[str] = None
-    commentaire_influence_locale_station: Optional[str] = None
+    code_projection: int
+    code_regime_station: int
+    code_region: str
+    code_sandre_reseau_station: Optional[List[Any]] = None
+    code_site: str
+    code_station: str
+    code_systeme_alti_site: Optional[int] = None
+    commentaire_influence_locale_station: None = None
     commentaire_station: Optional[str] = None
-    coordonnee_x_station: Optional[float] = None
-    coordonnee_y_station: Optional[float] = None
-    date_activation_ref_alti_station: Optional[str] = None  # or datetime
-    date_debut_ref_alti_station: Optional[str] = None  # or datetime
-    date_fermeture_station: Optional[str] = None  # or datetime
-    date_maj_ref_alti_station: Optional[str] = None  # or datetime
-    date_maj_station: Optional[str] = None  # or datetime
-    date_ouverture_station: Optional[str] = None  # or datetime
+    coordonnee_x_station: float
+    coordonnee_y_station: float
+    date_activation_ref_alti_station: Optional[str] = None
+    date_debut_ref_alti_station: Optional[str] = None
+    date_fermeture_station: Optional[str] = None
+    date_maj_ref_alti_station: Optional[str] = None
+    date_maj_station: str
+    date_ouverture_station: str
     descriptif_station: Optional[str] = None
-    en_service: Optional[bool] = None
-    geometry: Optional[Dict[str, Any]] = None  # or GeoJSON model
-    influence_locale_station: Optional[str] = None
-    latitude_station: Optional[float] = None
-    libelle_commune: Optional[str] = None
+    en_service: bool
+    geometry: Optional[Dict[str, Any]] = None  # or use a GeoJSON model if you want
+    influence_locale_station: Optional[int] = None
+    latitude_station: float
+    libelle_commune: str
     libelle_cours_eau: Optional[str] = None
-    libelle_departement: Optional[str] = None
-    libelle_region: Optional[str] = None
-    libelle_site: Optional[str] = None
-    libelle_station: Optional[str] = None
-    longitude_station: Optional[float] = None
-    qualification_donnees_station: Optional[str] = None
-    type_contexte_loi_stat_station: Optional[str] = None
-    type_loi_station: Optional[str] = None
-    type_station: Optional[str] = None
-    uri_cours_eau: Optional[str] = None
+    libelle_departement: str
+    libelle_region: str
+    libelle_site: str
+    libelle_station: str
+    longitude_station: float
+    qualification_donnees_station: int
+    type_contexte_loi_stat_station: Optional[Union[int, str]] = None
+    type_loi_station: Optional[Union[int, str]] = None
+    type_station: str
+    uri_cours_eau: str
 
 
 class Observation(BaseModel):
