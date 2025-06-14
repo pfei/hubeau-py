@@ -2,7 +2,7 @@ from typing import Any, List
 
 import httpx
 
-from hubeau_py.models.hydrometrie import Observation, ObservationElab, Site, Station
+from hubeau_py.models.hydrometrie import ObsElab, ObservationTr, Site, Station
 
 
 class HydrometrieAPI:
@@ -22,16 +22,16 @@ class HydrometrieAPI:
         data = resp.json()["data"]
         return [Station(**item) for item in data]
 
-    def get_observations_tr(self, **kwargs: Any) -> List[Observation]:
+    def get_observations_tr(self, **kwargs: Any) -> List[ObservationTr]:
         url = f"{self.BASE_URL}/observations_tr"
         resp = httpx.get(url, params=kwargs)
         resp.raise_for_status()
         data = resp.json()["data"]
-        return [Observation(**item) for item in data]
+        return [ObservationTr(**item) for item in data]
 
-    def get_obs_elab(self, **kwargs: Any) -> List[ObservationElab]:
+    def get_obs_elab(self, **kwargs: Any) -> List[ObsElab]:
         url = f"{self.BASE_URL}/obs_elab"
         resp = httpx.get(url, params=kwargs)
         resp.raise_for_status()
         data = resp.json()["data"]
-        return [ObservationElab(**item) for item in data]
+        return [ObsElab(**item) for item in data]

@@ -4,41 +4,41 @@ from pydantic import BaseModel
 
 
 class Site(BaseModel):
-    code_site: Optional[str] = None
-    libelle_site: Optional[str] = None
     altitude_site: Optional[float] = None
-    code_commune_site: Optional[str] = None
-    code_cours_eau: Optional[str] = None
-    code_departement: Optional[str] = None
-    code_entite_hydro_site: Optional[str] = None
-    code_projection: Optional[int] = None  # or str, check API docs
-    code_region: Optional[str] = None
-    code_systeme_alti_site: Optional[str] = None
-    code_troncon_hydro_site: Optional[str] = None
-    code_zone_hydro_site: Optional[str] = None
-    commentaire_influence_generale_site: Optional[str] = None
+    code_commune_site: List[str]  # or List[Any] if unsure
+    code_cours_eau: str
+    code_departement: List[str]
+    code_entite_hydro_site: str
+    code_projection: int
+    code_region: List[str]
+    code_site: str
+    code_systeme_alti_site: Optional[int] = None
+    code_troncon_hydro_site: str
+    code_zone_hydro_site: str
+    commentaire_influence_generale_site: None = None
     commentaire_site: Optional[str] = None
-    coordonnee_x_site: Optional[float] = None
-    coordonnee_y_site: Optional[float] = None
-    date_maj_site: Optional[str] = None  # or datetime, see API
-    date_premiere_donnee_dispo_site: Optional[str] = None  # or datetime, see API
-    geometry: Optional[Dict[str, Any]] = None  # or use a GeoJSON model if you want
-    grandeur_hydro: Optional[str] = None
-    influence_generale_site: Optional[str] = None
-    latitude_site: Optional[float] = None
-    libelle_commune: Optional[str] = None
+    coordonnee_x_site: float
+    coordonnee_y_site: float
+    date_maj_site: str
+    date_premiere_donnee_dispo_site: None = None
+    geometry: Dict[str, Any]  # or use a GeoJSON model if you want
+    grandeur_hydro: str
+    influence_generale_site: Optional[int] = None
+    latitude_site: float
+    libelle_commune: List[str]
     libelle_cours_eau: Optional[str] = None
-    libelle_departement: Optional[str] = None
-    libelle_region: Optional[str] = None
-    longitude_site: Optional[float] = None
-    premier_mois_annee_hydro_site: Optional[int] = None  # or str, see API
-    premier_mois_etiage_site: Optional[int] = None  # or str, see API
-    statut_site: Optional[str] = None
+    libelle_departement: List[str]
+    libelle_region: List[str]
+    libelle_site: str
+    longitude_site: float
+    premier_mois_annee_hydro_site: int
+    premier_mois_etiage_site: int
+    statut_site: int
     surface_bv: Optional[float] = None
-    type_contexte_loi_stat_site: Optional[str] = None
-    type_loi_site: Optional[str] = None
-    type_site: Optional[str] = None
-    uri_cours_eau: Optional[str] = None
+    type_contexte_loi_stat_site: Optional[List[int]] = None
+    type_loi_site: Optional[List[int]] = None
+    type_site: str
+    uri_cours_eau: str
 
 
 class Station(BaseModel):
@@ -54,7 +54,7 @@ class Station(BaseModel):
     code_site: str
     code_station: str
     code_systeme_alti_site: Optional[int] = None
-    commentaire_influence_locale_station: None = None
+    commentaire_influence_locale_station: Optional[str] = None
     commentaire_station: Optional[str] = None
     coordonnee_x_station: float
     coordonnee_y_station: float
@@ -83,30 +83,30 @@ class Station(BaseModel):
     uri_cours_eau: str
 
 
-class Observation(BaseModel):
-    code_continuite: Optional[int] = None  # Check API: sometimes int, sometimes str
-    code_methode_obs: Optional[str] = None
-    code_qualification_obs: Optional[str] = None
+class ObservationTr(BaseModel):
+    code_continuite: Optional[int] = None  # Adjust if sometimes string
+    code_methode_obs: Optional[int] = None  # API returns int
+    code_qualification_obs: Optional[int] = None  # API returns int
     code_site: Optional[str] = None
     code_station: Optional[str] = None
-    code_statut: Optional[int] = None  # or str, see API
-    code_systeme_alti_serie: Optional[str] = None
-    date_debut_serie: Optional[str] = None  # or datetime
-    date_fin_serie: Optional[str] = None  # or datetime
-    date_obs: Optional[str] = None  # or datetime
-    grandeur_hydro: Optional[str] = None  # e.g. "H" (hauteur), "Q" (débit)
+    code_statut: Optional[int] = None  # API returns int; adjust if sometimes string
+    code_systeme_alti_serie: Optional[int] = None  # API returns int
+    date_debut_serie: Optional[str] = None  # or datetime, depending on your use case
+    date_fin_serie: Optional[str] = None
+    date_obs: Optional[str] = None
+    grandeur_hydro: Optional[str] = None
     latitude: Optional[float] = None
     libelle_continuite: Optional[str] = None
     libelle_methode_obs: Optional[str] = None
     libelle_qualification_obs: Optional[str] = None
     libelle_statut: Optional[str] = None
     longitude: Optional[float] = None
-    resultat_obs: Optional[float] = None  # or int, depending on the data
+    resultat_obs: Optional[float] = None  # or int, depending on data
 
 
-class ObservationElab(BaseModel):
-    code_methode: Optional[str] = None
-    code_qualification: Optional[str] = None
+class ObsElab(BaseModel):
+    code_methode: Optional[int] = None
+    code_qualification: Optional[int] = None
     code_site: Optional[str] = None
     code_station: Optional[str] = None
     code_statut: Optional[int] = None  # or str, see API
