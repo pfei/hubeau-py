@@ -10,7 +10,7 @@ repos:
 
       - id: ci-check
         name: Run Full CI (Lint, Type, Test)
-        entry: bash -c "uv run ruff check . && uv run mypy . && uv run pytest -m 'not live'"
+        entry: bash -c "uv run ruff check . && uv run pyright . && uv run pytest -m 'not live'"
         language: system
         pass_filenames: false
         stages: [pre-push]

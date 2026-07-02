@@ -45,7 +45,7 @@ all = [
 dev = [
     "pytest>=9.0.3",
     "ruff>=0.11.10",
-    "mypy>=1.10.0,<2.0.0",
+    "pyright>=1.1.390",
     "notebook>=7.2.0",
     "jupyter>=1.1.1",
     "ipython>=8.24",
@@ -86,9 +86,10 @@ select = ["E", "F", "I"]
 [tool.ruff.lint.isort]
 known-first-party = ["hubeau_data"]
 
-[tool.mypy]
-python_version = "3.13"
-strict = true
-ignore_missing_imports = true
-mypy_path = "src"
-plugins = ["pydantic.mypy"]
+[tool.pyright]
+include = ["src"]
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+

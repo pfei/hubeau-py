@@ -24,8 +24,8 @@ jobs:
       - name: Run Ruff Linter
         run: uv run ruff check .
 
-      - name: Run Mypy Type Checking
-        run: uv run mypy .
+      - name: Run Pyright Type Checking
+        run: uv run pyright .
 
       - name: Run Mocked Tests
         run: uv run pytest -m "not live"
