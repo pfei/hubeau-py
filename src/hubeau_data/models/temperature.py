@@ -78,25 +78,37 @@ class StationTemperatureParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-temperature-continu
     """
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
-    libelle_station: Optional[List[str]] = Field(None, description="Station label(s)")
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
+    )
+    libelle_station: Optional[List[str]] = Field(
+        default=None, description="Station label(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_cours_eau: Optional[List[str]] = Field(None, description="Watercourse code(s)")
-    code_masse_eau: Optional[List[str]] = Field(None, description="Water body code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_cours_eau: Optional[List[str]] = Field(
+        default=None, description="Watercourse code(s)"
+    )
+    code_masse_eau: Optional[List[str]] = Field(
+        default=None, description="Water body code(s)"
+    )
     date_debut_mesure: Optional[str] = Field(
-        None, description="Start date (YYYY-MM-DD)"
+        default=None, description="Start date (YYYY-MM-DD)"
     )
-    date_fin_mesure: Optional[str] = Field(None, description="End date (YYYY-MM-DD)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    date_fin_mesure: Optional[str] = Field(
+        default=None, description="End date (YYYY-MM-DD)"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -107,29 +119,43 @@ class ChroniqueTemperatureParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-temperature-continu
     """
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_cours_eau: Optional[List[str]] = Field(None, description="Watercourse code(s)")
-    code_masse_eau: Optional[List[str]] = Field(None, description="Water body code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_cours_eau: Optional[List[str]] = Field(
+        default=None, description="Watercourse code(s)"
+    )
+    code_masse_eau: Optional[List[str]] = Field(
+        default=None, description="Water body code(s)"
+    )
     code_qualification: Optional[List[str]] = Field(
-        None, description="Qualification code(s)"
+        default=None, description="Qualification code(s)"
     )
-    code_statut: Optional[List[str]] = Field(None, description="Status code(s)")
+    code_statut: Optional[List[str]] = Field(default=None, description="Status code(s)")
     date_debut_mesure: Optional[str] = Field(
-        None, description="Start date (YYYY-MM-DD)"
+        default=None, description="Start date (YYYY-MM-DD)"
     )
-    date_fin_mesure: Optional[str] = Field(None, description="End date (YYYY-MM-DD)")
-    resultat_min: Optional[float] = Field(None, description="Min temperature value")
-    resultat_max: Optional[float] = Field(None, description="Max temperature value")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    date_fin_mesure: Optional[str] = Field(
+        default=None, description="End date (YYYY-MM-DD)"
+    )
+    resultat_min: Optional[float] = Field(
+        default=None, description="Min temperature value"
+    )
+    resultat_max: Optional[float] = Field(
+        default=None, description="Max temperature value"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")

@@ -4,7 +4,7 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/hubeau-data)](https://pypi.org/project/hubeau-data/)
 [![CI](https://github.com/pfei/hubeau-data/actions/workflows/ci.yml/badge.svg)](https://github.com/pfei/hubeau-data/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/)
-[![Checked with mypy](https://img.shields.io/badge/mypy-strict-green.svg)](https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file)
+[![Checked with pyright](https://img.shields.io/badge/pyright-strict-green.svg)](https://microsoft.github.io/pyright/#/)
 [![Linting: ruff](https://img.shields.io/badge/linting-ruff-orange.svg)](https://github.com/astral-sh/ruff)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Package Manager: uv](https://img.shields.io/badge/managed%20by-uv-purple.svg)](https://github.com/astral-sh/uv)
@@ -35,7 +35,7 @@ uv sync --all-extras   # with optional extras (pandas, etc.) if defined
 
 ```bash
 uv run ruff check .          # lint
-uv run mypy .                # type check
+uv run pyright .             # type check
 uv run pytest -m "not live"  # fast mocked tests — no network required
 uv run pytest -m "live" -s   # live integration tests against real Hub'Eau APIs
 ```
@@ -152,7 +152,7 @@ on both `HubeauClient` (sync) and `AsyncHubeauClient` (async, except health/cove
 
 ## Stack
 
-- Python 3.13+, `mypy --strict`, `ruff`, `uv`, `hatchling`, src-layout
+- Python 3.13+, `pyright --strict`, `ruff`, `uv`, `hatchling`, src-layout
 - `httpx` + `tenacity` for resilient sync/async HTTP
 - `pytest-httpx` mocked test suite — CI runs without network dependency
 

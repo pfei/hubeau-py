@@ -94,21 +94,27 @@ class ChroniquePrelevement(BaseModel):
 class OuvrageParams(BaseModel):
     """Query parameters for water withdrawal structures."""
 
-    code_ouvrage: Optional[List[str]] = Field(None, description="Structure code(s)")
-    nom_ouvrage: Optional[List[str]] = Field(None, description="Structure name(s)")
+    code_ouvrage: Optional[List[str]] = Field(
+        default=None, description="Structure code(s)"
+    )
+    nom_ouvrage: Optional[List[str]] = Field(
+        default=None, description="Structure name(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune_insee: Optional[List[str]] = Field(None, description="Commune code(s)")
+    code_commune_insee: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
     code_type_milieu: Optional[List[str]] = Field(
-        None, description="Medium type: CONT, LIT, SOUT"
+        default=None, description="Medium type: CONT, LIT, SOUT"
     )
-    code_bdlisa: Optional[List[str]] = Field(None, description="BDLISA code(s)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    code_bdlisa: Optional[List[str]] = Field(default=None, description="BDLISA code(s)")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -117,22 +123,28 @@ class PointPrelevementParams(BaseModel):
     """Query parameters for water withdrawal points."""
 
     code_point_prelevement: Optional[List[str]] = Field(
-        None, description="Point code(s)"
+        default=None, description="Point code(s)"
     )
-    code_ouvrage: Optional[List[str]] = Field(None, description="Structure code(s)")
+    code_ouvrage: Optional[List[str]] = Field(
+        default=None, description="Structure code(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune_insee: Optional[List[str]] = Field(None, description="Commune code(s)")
+    code_commune_insee: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
     code_type_milieu: Optional[List[str]] = Field(
-        None, description="Medium type: CONT, LIT, SOUT"
+        default=None, description="Medium type: CONT, LIT, SOUT"
     )
     code_nature: Optional[List[str]] = Field(
-        None, description="Nature: F (fictif), P (physique)"
+        default=None, description="Nature: F (fictif), P (physique)"
     )
-    code_bss_point_eau: Optional[List[str]] = Field(None, description="BSS code(s)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    code_bss_point_eau: Optional[List[str]] = Field(
+        default=None, description="BSS code(s)"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -140,35 +152,43 @@ class PointPrelevementParams(BaseModel):
 class ChroniquePrelevementParams(BaseModel):
     """Query parameters for annual water withdrawal volumes."""
 
-    code_ouvrage: Optional[List[str]] = Field(None, description="Structure code(s)")
-    annee: Optional[List[int]] = Field(None, description="Year(s) of withdrawal")
-    code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+    code_ouvrage: Optional[List[str]] = Field(
+        default=None, description="Structure code(s)"
     )
-    code_commune_insee: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_usage: Optional[List[str]] = Field(None, description="Usage code(s)")
-    code_type_milieu: Optional[List[str]] = Field(None, description="Medium type(s)")
+    annee: Optional[List[int]] = Field(
+        default=None, description="Year(s) of withdrawal"
+    )
+    code_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
+    code_commune_insee: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_usage: Optional[List[str]] = Field(default=None, description="Usage code(s)")
+    code_type_milieu: Optional[List[str]] = Field(
+        default=None, description="Medium type(s)"
+    )
     code_qualification_volume: Optional[List[str]] = Field(
-        None, description="Volume qualification code(s)"
+        default=None, description="Volume qualification code(s)"
     )
     code_statut_volume: Optional[List[str]] = Field(
-        None, description="Volume status code(s)"
+        default=None, description="Volume status code(s)"
     )
     code_statut_instruction: Optional[List[str]] = Field(
-        None, description="Instruction status: AUT, DEM, REA"
+        default=None, description="Instruction status: AUT, DEM, REA"
     )
     code_mode_obtention_volume: Optional[List[str]] = Field(
-        None, description="Volume obtention mode(s)"
+        default=None, description="Volume obtention mode(s)"
     )
-    volume_min: Optional[float] = Field(None, description="Min volume (m3)")
-    volume_max: Optional[float] = Field(None, description="Max volume (m3)")
+    volume_min: Optional[float] = Field(default=None, description="Min volume (m3)")
+    volume_max: Optional[float] = Field(default=None, description="Max volume (m3)")
     prelevement_ecrasant: Optional[bool] = Field(
-        None, description="High-volume low-retention withdrawal"
+        default=None, description="High-volume low-retention withdrawal"
     )
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")

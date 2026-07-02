@@ -70,23 +70,31 @@ class AchatSubstanceParams(BaseModel):
         "National",
         description="Territory type: Zone postale, Département, Région, National",
     )
-    code_territoire: Optional[str] = Field(None, description="Territory code(s)")
-    libelle_territoire: Optional[str] = Field(None, description="Territory label(s)")
-    code_substance: Optional[str] = Field(None, description="Sandre substance code(s)")
-    libelle_substance: Optional[str] = Field(None, description="Substance label(s)")
-    code_cas: Optional[str] = Field(None, description="CAS code(s)")
-    fonction: Optional[str] = Field(None, description="Substance function(s)")
-    classification: Optional[str] = Field(None, description="Classification(s)")
-    amm: Optional[str] = Field(None, description="AMM number(s)")
-    achat_etranger: Optional[str] = Field(
-        None, description="Foreign purchase: Oui/Non/nc"
+    code_territoire: Optional[str] = Field(
+        default=None, description="Territory code(s)"
     )
-    annee_min: Optional[int] = Field(None, description="Min year")
-    annee_max: Optional[int] = Field(None, description="Max year")
-    quantite_min: Optional[float] = Field(None, description="Min quantity (kg)")
-    quantite_max: Optional[float] = Field(None, description="Max quantity (kg)")
-    size: Optional[int] = Field(None, ge=1)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    libelle_territoire: Optional[str] = Field(
+        default=None, description="Territory label(s)"
+    )
+    code_substance: Optional[str] = Field(
+        default=None, description="Sandre substance code(s)"
+    )
+    libelle_substance: Optional[str] = Field(
+        default=None, description="Substance label(s)"
+    )
+    code_cas: Optional[str] = Field(default=None, description="CAS code(s)")
+    fonction: Optional[str] = Field(default=None, description="Substance function(s)")
+    classification: Optional[str] = Field(default=None, description="Classification(s)")
+    amm: Optional[str] = Field(default=None, description="AMM number(s)")
+    achat_etranger: Optional[str] = Field(
+        default=None, description="Foreign purchase: Oui/Non/nc"
+    )
+    annee_min: Optional[int] = Field(default=None, description="Min year")
+    annee_max: Optional[int] = Field(default=None, description="Max year")
+    quantite_min: Optional[float] = Field(default=None, description="Min quantity (kg)")
+    quantite_max: Optional[float] = Field(default=None, description="Max quantity (kg)")
+    size: Optional[int] = Field(default=None, ge=1)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -98,20 +106,26 @@ class AchatProduitParams(BaseModel):
         "National",
         description="Territory type: Zone postale, Département, Région, National",
     )
-    code_territoire: Optional[str] = Field(None, description="Territory code(s)")
-    libelle_territoire: Optional[str] = Field(None, description="Territory label(s)")
-    amm: Optional[str] = Field(None, description="AMM number(s)")
-    achat_etranger: Optional[str] = Field(
-        None, description="Foreign purchase: Oui/Non/nc"
+    code_territoire: Optional[str] = Field(
+        default=None, description="Territory code(s)"
     )
-    eaj: Optional[str] = Field(None, description="Garden use authorized: Oui/Non/nc")
-    unite: Optional[str] = Field(None, description="Unit: l or kg")
-    annee_min: Optional[int] = Field(None, description="Min year")
-    annee_max: Optional[int] = Field(None, description="Max year")
-    quantite_min: Optional[float] = Field(None, description="Min quantity")
-    quantite_max: Optional[float] = Field(None, description="Max quantity")
-    size: Optional[int] = Field(None, ge=1)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    libelle_territoire: Optional[str] = Field(
+        default=None, description="Territory label(s)"
+    )
+    amm: Optional[str] = Field(default=None, description="AMM number(s)")
+    achat_etranger: Optional[str] = Field(
+        default=None, description="Foreign purchase: Oui/Non/nc"
+    )
+    eaj: Optional[str] = Field(
+        default=None, description="Garden use authorized: Oui/Non/nc"
+    )
+    unite: Optional[str] = Field(default=None, description="Unit: l or kg")
+    annee_min: Optional[int] = Field(default=None, description="Min year")
+    annee_max: Optional[int] = Field(default=None, description="Max year")
+    quantite_min: Optional[float] = Field(default=None, description="Min quantity")
+    quantite_max: Optional[float] = Field(default=None, description="Max quantity")
+    size: Optional[int] = Field(default=None, ge=1)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -122,20 +136,28 @@ class VenteSubstanceParams(BaseModel):
     type_territoire: Optional[str] = Field(
         "National", description="Territory type: Département, Région, National"
     )
-    code_territoire: Optional[str] = Field(None, description="Territory code(s)")
-    libelle_territoire: Optional[str] = Field(None, description="Territory label(s)")
-    code_substance: Optional[str] = Field(None, description="Sandre substance code(s)")
-    libelle_substance: Optional[str] = Field(None, description="Substance label(s)")
-    code_cas: Optional[str] = Field(None, description="CAS code(s)")
-    fonction: Optional[str] = Field(None, description="Substance function(s)")
-    classification: Optional[str] = Field(None, description="Classification(s)")
-    amm: Optional[str] = Field(None, description="AMM number(s)")
-    annee_min: Optional[int] = Field(None, description="Min year")
-    annee_max: Optional[int] = Field(None, description="Max year")
-    quantite_min: Optional[float] = Field(None, description="Min quantity (kg)")
-    quantite_max: Optional[float] = Field(None, description="Max quantity (kg)")
-    size: Optional[int] = Field(None, ge=1)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    code_territoire: Optional[str] = Field(
+        default=None, description="Territory code(s)"
+    )
+    libelle_territoire: Optional[str] = Field(
+        default=None, description="Territory label(s)"
+    )
+    code_substance: Optional[str] = Field(
+        default=None, description="Sandre substance code(s)"
+    )
+    libelle_substance: Optional[str] = Field(
+        default=None, description="Substance label(s)"
+    )
+    code_cas: Optional[str] = Field(default=None, description="CAS code(s)")
+    fonction: Optional[str] = Field(default=None, description="Substance function(s)")
+    classification: Optional[str] = Field(default=None, description="Classification(s)")
+    amm: Optional[str] = Field(default=None, description="AMM number(s)")
+    annee_min: Optional[int] = Field(default=None, description="Min year")
+    annee_max: Optional[int] = Field(default=None, description="Max year")
+    quantite_min: Optional[float] = Field(default=None, description="Min quantity (kg)")
+    quantite_max: Optional[float] = Field(default=None, description="Max quantity (kg)")
+    size: Optional[int] = Field(default=None, ge=1)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -146,16 +168,22 @@ class VenteProduitParams(BaseModel):
     type_territoire: Optional[str] = Field(
         "National", description="Territory type: Département, Région, National"
     )
-    code_territoire: Optional[str] = Field(None, description="Territory code(s)")
-    libelle_territoire: Optional[str] = Field(None, description="Territory label(s)")
-    amm: Optional[str] = Field(None, description="AMM number(s)")
-    eaj: Optional[str] = Field(None, description="Garden use authorized: Oui/Non")
-    unite: Optional[str] = Field(None, description="Unit: l or kg")
-    annee_min: Optional[int] = Field(None, description="Min year")
-    annee_max: Optional[int] = Field(None, description="Max year")
-    quantite_min: Optional[float] = Field(None, description="Min quantity")
-    quantite_max: Optional[float] = Field(None, description="Max quantity")
-    size: Optional[int] = Field(None, ge=1)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    code_territoire: Optional[str] = Field(
+        default=None, description="Territory code(s)"
+    )
+    libelle_territoire: Optional[str] = Field(
+        default=None, description="Territory label(s)"
+    )
+    amm: Optional[str] = Field(default=None, description="AMM number(s)")
+    eaj: Optional[str] = Field(
+        default=None, description="Garden use authorized: Oui/Non"
+    )
+    unite: Optional[str] = Field(default=None, description="Unit: l or kg")
+    annee_min: Optional[int] = Field(default=None, description="Min year")
+    annee_max: Optional[int] = Field(default=None, description="Max year")
+    quantite_min: Optional[float] = Field(default=None, description="Min quantity")
+    quantite_max: Optional[float] = Field(default=None, description="Max quantity")
+    size: Optional[int] = Field(default=None, ge=1)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")

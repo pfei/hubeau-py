@@ -68,30 +68,32 @@ class StationPiezoParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-piezometrie
     """
 
-    bss_id: Optional[List[str]] = Field(None, description="New BSS code(s)")
-    code_bss: Optional[List[str]] = Field(None, description="Old BSS code(s)")
-    code_commune: Optional[List[str]] = Field(None, description="INSEE commune code(s)")
+    bss_id: Optional[List[str]] = Field(default=None, description="New BSS code(s)")
+    code_bss: Optional[List[str]] = Field(default=None, description="Old BSS code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="INSEE commune code(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
     code_bdlisa: Optional[List[str]] = Field(
-        None, description="BDLISA hydrogeological entity code(s)"
+        default=None, description="BDLISA hydrogeological entity code(s)"
     )
     codes_masse_eau_edl: Optional[List[str]] = Field(
-        None, description="Water body code(s)"
+        default=None, description="Water body code(s)"
     )
     nb_mesures_piezo_min: Optional[int] = Field(
-        None, description="Minimum number of piezometric measurements"
+        default=None, description="Minimum number of piezometric measurements"
     )
     date_recherche: Optional[str] = Field(
-        None, description="Active stations at date (yyyy-MM-dd)"
+        default=None, description="Active stations at date (yyyy-MM-dd)"
     )
     size: Optional[int] = Field(
-        None, ge=1, le=20000, description="Page size (max 20000)"
+        default=None, ge=1, le=20000, description="Page size (max 20000)"
     )
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -102,17 +104,19 @@ class ChroniquePiezoParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-piezometrie
     """
 
-    bss_id: Optional[List[str]] = Field(None, description="New BSS code(s)")
-    code_bss: Optional[List[str]] = Field(None, description="Old BSS code(s)")
+    bss_id: Optional[List[str]] = Field(default=None, description="New BSS code(s)")
+    code_bss: Optional[List[str]] = Field(default=None, description="Old BSS code(s)")
     date_debut_mesure: Optional[str] = Field(
-        None, description="Start date (yyyy-MM-dd)"
+        default=None, description="Start date (yyyy-MM-dd)"
     )
-    date_fin_mesure: Optional[str] = Field(None, description="End date (yyyy-MM-dd)")
+    date_fin_mesure: Optional[str] = Field(
+        default=None, description="End date (yyyy-MM-dd)"
+    )
     size: Optional[int] = Field(
-        None, ge=1, le=20000, description="Page size (max 20000)"
+        default=None, ge=1, le=20000, description="Page size (max 20000)"
     )
     sort: Optional[str] = Field(
-        "asc", pattern="^(asc|desc)$", description="Sort by date_mesure"
+        default="asc", pattern="^(asc|desc)$", description="Sort by date_mesure"
     )
 
     model_config = ConfigDict(extra="allow")
@@ -124,17 +128,19 @@ class ChroniquePiezoTrParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-piezometrie
     """
 
-    bss_id: Optional[List[str]] = Field(None, description="New BSS code(s)")
-    code_bss: Optional[List[str]] = Field(None, description="Old BSS code(s)")
+    bss_id: Optional[List[str]] = Field(default=None, description="New BSS code(s)")
+    code_bss: Optional[List[str]] = Field(default=None, description="Old BSS code(s)")
     date_debut_mesure: Optional[str] = Field(
-        None, description="Start date (yyyy-MM-dd)"
+        default=None, description="Start date (yyyy-MM-dd)"
     )
-    date_fin_mesure: Optional[str] = Field(None, description="End date (yyyy-MM-dd)")
-    niveau_ngf_min: Optional[float] = Field(None, description="Min NGF level")
-    niveau_ngf_max: Optional[float] = Field(None, description="Max NGF level")
-    profondeur_min: Optional[float] = Field(None, description="Min depth")
-    profondeur_max: Optional[float] = Field(None, description="Max depth")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    date_fin_mesure: Optional[str] = Field(
+        default=None, description="End date (yyyy-MM-dd)"
+    )
+    niveau_ngf_min: Optional[float] = Field(default=None, description="Min NGF level")
+    niveau_ngf_max: Optional[float] = Field(default=None, description="Max NGF level")
+    profondeur_min: Optional[float] = Field(default=None, description="Min depth")
+    profondeur_max: Optional[float] = Field(default=None, description="Max depth")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")

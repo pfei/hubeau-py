@@ -130,21 +130,25 @@ class SiteParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-hydrometrie#/hydrometrie/sites
     """
 
-    code_site: Optional[List[str]] = Field(None, description="Site code(s)")
+    code_site: Optional[List[str]] = Field(default=None, description="Site code(s)")
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune_site: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_cours_eau: Optional[str] = Field(None, description="Watercourse code")
-    libelle_site: Optional[str] = Field(None, description="Site label (partial match)")
-    type_site: Optional[str] = Field(None, description="Site type")
+    code_commune_site: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_cours_eau: Optional[str] = Field(default=None, description="Watercourse code")
+    libelle_site: Optional[str] = Field(
+        default=None, description="Site label (partial match)"
+    )
+    type_site: Optional[str] = Field(default=None, description="Site type")
     size: Optional[int] = Field(
-        None, ge=1, le=10000, description="Maximum number of results"
+        default=None, ge=1, le=10000, description="Maximum number of results"
     )
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -155,22 +159,26 @@ class StationParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-hydrometrie#/hydrometrie/stations
     """
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
-    code_site: Optional[List[str]] = Field(None, description="Site code(s)")
-    code_commune_station: Optional[str] = Field(None, description="Commune code")
-    code_departement: Optional[str] = Field(None, description="Department code")
-    code_region: Optional[str] = Field(None, description="Region code")
-    code_cours_eau: Optional[str] = Field(None, description="Watercourse code")
-    libelle_station: Optional[str] = Field(
-        None, description="Station label (partial match)"
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
     )
-    en_service: Optional[bool] = Field(None, description="In service filter")
+    code_site: Optional[List[str]] = Field(default=None, description="Site code(s)")
+    code_commune_station: Optional[str] = Field(
+        default=None, description="Commune code"
+    )
+    code_departement: Optional[str] = Field(default=None, description="Department code")
+    code_region: Optional[str] = Field(default=None, description="Region code")
+    code_cours_eau: Optional[str] = Field(default=None, description="Watercourse code")
+    libelle_station: Optional[str] = Field(
+        default=None, description="Station label (partial match)"
+    )
+    en_service: Optional[bool] = Field(default=None, description="In service filter")
     size: Optional[int] = Field(
-        None, ge=1, le=10000, description="Maximum number of results"
+        default=None, ge=1, le=10000, description="Maximum number of results"
     )
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -182,7 +190,7 @@ class ObsElabParams(BaseModel):
     """
 
     code_entite: Optional[List[str]] = Field(
-        None,
+        default=None,
         description=(
             "Sandre code(s) for hydrometric sites or stations. "
             "Maximum 100 codes. Supports wildcard patterns (e.g. 'K*')."
@@ -190,19 +198,21 @@ class ObsElabParams(BaseModel):
     )
 
     grandeur_hydro_elab: Optional[str] = Field(
-        None, description="QmnJ, QmM, HIXM, HIXnJ, QINM, QINnJ, QixM, QIXnJ"
+        default=None, description="QmnJ, QmM, HIXM, HIXnJ, QINM, QINnJ, QixM, QIXnJ"
     )
     date_debut_obs_elab: Optional[str] = Field(
-        None, description="Start date (ISO 8601)"
+        default=None, description="Start date (ISO 8601)"
     )
-    date_fin_obs_elab: Optional[str] = Field(None, description="End date (ISO 8601)")
+    date_fin_obs_elab: Optional[str] = Field(
+        default=None, description="End date (ISO 8601)"
+    )
     resultat_min: Optional[float] = None
     resultat_max: Optional[float] = None
-    size: Optional[int] = Field(None, ge=1, le=20000)
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -215,7 +225,7 @@ class ObservationTrParams(BaseModel):
     """
 
     code_entite: Optional[List[str]] = Field(
-        None,
+        default=None,
         description=(
             "Site or station code(s). A site code is the 4-character "
             "hydrographic zone code + a 4-digit increment (e.g. J4310010). "
@@ -225,18 +235,20 @@ class ObservationTrParams(BaseModel):
     )
 
     grandeur_hydro: Optional[List[str]] = Field(
-        None, description="Hydrometric magnitude: H (height) or Q (flow)"
+        default=None, description="Hydrometric magnitude: H (height) or Q (flow)"
     )
-    date_debut_obs: Optional[str] = Field(None, description="Start date (ISO 8601)")
-    date_fin_obs: Optional[str] = Field(None, description="End date (ISO 8601)")
+    date_debut_obs: Optional[str] = Field(
+        default=None, description="Start date (ISO 8601)"
+    )
+    date_fin_obs: Optional[str] = Field(default=None, description="End date (ISO 8601)")
     size: Optional[int] = Field(
-        None, ge=1, le=20000, description="Maximum number of results"
+        default=None, ge=1, le=20000, description="Maximum number of results"
     )
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
     sort: Optional[str] = Field(
-        "desc", pattern="^(asc|desc)$", description="Sort order by date_obs"
+        default="desc", pattern="^(asc|desc)$", description="Sort order by date_obs"
     )
 
     model_config = ConfigDict(extra="allow")

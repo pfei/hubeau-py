@@ -57,38 +57,44 @@ class CommuneUdi(BaseModel):
 class ResultatEauPotableParams(BaseModel):
     """Query parameters for drinking water analysis results."""
 
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s) INSEE")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s) INSEE"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
     code_reseau: Optional[List[str]] = Field(
-        None, description="Network code(s) SISE-Eaux"
+        default=None, description="Network code(s) SISE-Eaux"
     )
     code_parametre: Optional[List[str]] = Field(
-        None, description="Parameter code(s) Sandre"
+        default=None, description="Parameter code(s) Sandre"
     )
     code_parametre_se: Optional[List[str]] = Field(
-        None, description="Parameter code(s) SISE-Eaux"
+        default=None, description="Parameter code(s) SISE-Eaux"
     )
     code_lieu_analyse: Optional[str] = Field(
-        None, description="Analysis location: T (terrain) or L (laboratoire)"
+        default=None, description="Analysis location: T (terrain) or L (laboratoire)"
     )
     date_min_prelevement: Optional[str] = Field(
-        None, description="Min sampling date (YYYY-MM-DD)"
+        default=None, description="Min sampling date (YYYY-MM-DD)"
     )
     date_max_prelevement: Optional[str] = Field(
-        None, description="Max sampling date (YYYY-MM-DD)"
+        default=None, description="Max sampling date (YYYY-MM-DD)"
     )
     conformite_limites_bact_prelevement: Optional[str] = Field(
-        None, description="Bacteriological conformity: C/N/D/S"
+        default=None, description="Bacteriological conformity: C/N/D/S"
     )
     conformite_limites_pc_prelevement: Optional[str] = Field(
-        None, description="Chemical conformity: C/N/D/S"
+        default=None, description="Chemical conformity: C/N/D/S"
     )
-    borne_inf_resultat: Optional[float] = Field(None, description="Min numeric result")
-    borne_sup_resultat: Optional[float] = Field(None, description="Max numeric result")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    borne_inf_resultat: Optional[float] = Field(
+        default=None, description="Min numeric result"
+    )
+    borne_sup_resultat: Optional[float] = Field(
+        default=None, description="Max numeric result"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")
 
@@ -96,14 +102,18 @@ class ResultatEauPotableParams(BaseModel):
 class CommuneUdiParams(BaseModel):
     """Query parameters for UDI-commune links."""
 
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s) INSEE")
-    code_reseau: Optional[List[str]] = Field(
-        None, description="Network code(s) SISE-Eaux"
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s) INSEE"
     )
-    nom_commune: Optional[List[str]] = Field(None, description="Commune name(s)")
-    nom_reseau: Optional[List[str]] = Field(None, description="Network name(s)")
-    annee: Optional[List[str]] = Field(None, description="Year(s) (max 10)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    code_reseau: Optional[List[str]] = Field(
+        default=None, description="Network code(s) SISE-Eaux"
+    )
+    nom_commune: Optional[List[str]] = Field(
+        default=None, description="Commune name(s)"
+    )
+    nom_reseau: Optional[List[str]] = Field(default=None, description="Network name(s)")
+    annee: Optional[List[str]] = Field(default=None, description="Year(s) (max 10)")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
 
     model_config = ConfigDict(extra="allow")

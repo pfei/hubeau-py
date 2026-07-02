@@ -133,35 +133,39 @@ class StationNappeParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-qualite-nappes
     """
 
-    bss_id: Optional[List[str]] = Field(None, description="BSS station code(s)")
-    code_commune: Optional[List[str]] = Field(None, description="INSEE commune code(s)")
-    num_departement: Optional[List[str]] = Field(None, description="Department code(s)")
-    nom_region: Optional[List[str]] = Field(None, description="Region name(s)")
+    bss_id: Optional[List[str]] = Field(default=None, description="BSS station code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="INSEE commune code(s)"
+    )
+    num_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
+    nom_region: Optional[List[str]] = Field(default=None, description="Region name(s)")
     code_entite_hg_bdlisa: Optional[List[str]] = Field(
-        None, description="BDLISA hydrogeological entity code(s)"
+        default=None, description="BDLISA hydrogeological entity code(s)"
     )
     code_masse_eau_edl: Optional[List[str]] = Field(
-        None, description="Water body code(s) EDL"
+        default=None, description="Water body code(s) EDL"
     )
     code_masse_eau_rap: Optional[List[str]] = Field(
-        None, description="Water body code(s) RAP"
+        default=None, description="Water body code(s) RAP"
     )
     prof_invest_min: Optional[float] = Field(
-        None, description="Min investigation depth (m)"
+        default=None, description="Min investigation depth (m)"
     )
     prof_invest_max: Optional[float] = Field(
-        None, description="Max investigation depth (m)"
+        default=None, description="Max investigation depth (m)"
     )
     date_min_maj: Optional[str] = Field(
-        None, description="Min update date (yyyy-MM-dd)"
+        default=None, description="Min update date (yyyy-MM-dd)"
     )
     date_max_maj: Optional[str] = Field(
-        None, description="Max update date (yyyy-MM-dd)"
+        default=None, description="Max update date (yyyy-MM-dd)"
     )
-    size: Optional[int] = Field(None, ge=1, le=20000)
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -172,45 +176,53 @@ class AnalyseNappeParams(BaseModel):
     see: https://hubeau.eaufrance.fr/page/api-qualite-nappes
     """
 
-    bss_id: Optional[List[str]] = Field(None, description="BSS station code(s)")
-    code_param: Optional[List[int]] = Field(None, description="Parameter code(s)")
-    code_fraction: Optional[List[int]] = Field(None, description="Fraction code(s)")
+    bss_id: Optional[List[str]] = Field(default=None, description="BSS station code(s)")
+    code_param: Optional[List[int]] = Field(
+        default=None, description="Parameter code(s)"
+    )
+    code_fraction: Optional[List[int]] = Field(
+        default=None, description="Fraction code(s)"
+    )
     code_groupe_parametre: Optional[List[str]] = Field(
-        None, description="Parameter group code(s)"
+        default=None, description="Parameter group code(s)"
     )
     code_qualification: Optional[List[str]] = Field(
-        None, description="Qualification code(s)"
+        default=None, description="Qualification code(s)"
     )
     code_statut_analyse: Optional[List[str]] = Field(
-        None, description="Analysis status code(s)"
+        default=None, description="Analysis status code(s)"
     )
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    num_departement: Optional[List[str]] = Field(None, description="Department code(s)")
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    num_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
     code_insee_actuel: Optional[List[str]] = Field(
-        None, description="INSEE commune code(s)"
+        default=None, description="INSEE commune code(s)"
     )
     code_masse_eau_edl: Optional[List[str]] = Field(
-        None, description="Water body code(s) EDL"
+        default=None, description="Water body code(s) EDL"
     )
-    code_bassin_dce: Optional[List[str]] = Field(None, description="DCE basin code(s)")
+    code_bassin_dce: Optional[List[str]] = Field(
+        default=None, description="DCE basin code(s)"
+    )
     date_debut_prelevement: Optional[str] = Field(
-        None, description="Start date (yyyy-MM-dd)"
+        default=None, description="Start date (yyyy-MM-dd)"
     )
     date_fin_prelevement: Optional[str] = Field(
-        None, description="End date (yyyy-MM-dd)"
+        default=None, description="End date (yyyy-MM-dd)"
     )
     date_min_maj: Optional[str] = Field(
-        None, description="Min update date (yyyy-MM-dd)"
+        default=None, description="Min update date (yyyy-MM-dd)"
     )
     date_max_maj: Optional[str] = Field(
-        None, description="Max update date (yyyy-MM-dd)"
+        default=None, description="Max update date (yyyy-MM-dd)"
     )
-    resultat_min: Optional[float] = Field(None, description="Min result value")
-    resultat_max: Optional[float] = Field(None, description="Max result value")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    resultat_min: Optional[float] = Field(default=None, description="Min result value")
+    resultat_max: Optional[float] = Field(default=None, description="Max result value")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")

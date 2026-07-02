@@ -130,9 +130,9 @@ def test_get_analyses_live() -> None:
     stations = client.qualite_rivieres.get_stations(params=station_params)
     if not stations.data:
         pytest.skip("No stations available for testing")
-    analyse_params = AnalysePcParams(
-        code_station=[stations.data[0].code_station], size=1
-    )
+    code_station = stations.data[0].code_station
+    assert code_station is not None
+    analyse_params = AnalysePcParams(code_station=[code_station], size=1)
     analyses = client.qualite_rivieres.get_analyses(params=analyse_params)
 
     assert isinstance(analyses, PagedResponse)

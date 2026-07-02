@@ -195,24 +195,30 @@ class OperationPoisson(BaseModel):
 class StationPoissonParams(BaseModel):
     """Query parameters for fish monitoring stations."""
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
     code_entite_hydrographique: Optional[List[str]] = Field(
-        None, description="Hydrographic entity code(s)"
+        default=None, description="Hydrographic entity code(s)"
     )
-    code_masse_eau: Optional[List[str]] = Field(None, description="Water body code(s)")
-    altitude_min: Optional[int] = Field(None, description="Min altitude (m)")
-    altitude_max: Optional[int] = Field(None, description="Max altitude (m)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    code_masse_eau: Optional[List[str]] = Field(
+        default=None, description="Water body code(s)"
+    )
+    altitude_min: Optional[int] = Field(default=None, description="Min altitude (m)")
+    altitude_max: Optional[int] = Field(default=None, description="Max altitude (m)")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -220,31 +226,39 @@ class StationPoissonParams(BaseModel):
 class IndicateurPoissonParams(BaseModel):
     """Query parameters for fish indicators (IPR, IPR+)."""
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
-    code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
     )
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_operation: Optional[List[str]] = Field(None, description="Operation code(s)")
+    code_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_operation: Optional[List[str]] = Field(
+        default=None, description="Operation code(s)"
+    )
     date_operation_min: Optional[str] = Field(
-        None, description="Min operation date (YYYY-MM-DD)"
+        default=None, description="Min operation date (YYYY-MM-DD)"
     )
     date_operation_max: Optional[str] = Field(
-        None, description="Max operation date (YYYY-MM-DD)"
+        default=None, description="Max operation date (YYYY-MM-DD)"
     )
-    ipr_note_min: Optional[float] = Field(None, description="Min IPR score")
-    ipr_note_max: Optional[float] = Field(None, description="Max IPR score")
+    ipr_note_min: Optional[float] = Field(default=None, description="Min IPR score")
+    ipr_note_max: Optional[float] = Field(default=None, description="Max IPR score")
     ipr_code_classe: Optional[List[str]] = Field(
-        None, description="IPR class code(s): 1-5"
+        default=None, description="IPR class code(s): 1-5"
     )
-    iprplus_note_min: Optional[float] = Field(None, description="Min IPR+ score")
-    iprplus_note_max: Optional[float] = Field(None, description="Max IPR+ score")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    iprplus_note_min: Optional[float] = Field(
+        default=None, description="Min IPR+ score"
+    )
+    iprplus_note_max: Optional[float] = Field(
+        default=None, description="Max IPR+ score"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -252,33 +266,41 @@ class IndicateurPoissonParams(BaseModel):
 class ObservationPoissonParams(BaseModel):
     """Query parameters for fish observations."""
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
-    code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
     )
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_operation: Optional[List[str]] = Field(None, description="Operation code(s)")
-    code_taxon: Optional[List[str]] = Field(None, description="Taxon code(s)")
+    code_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_operation: Optional[List[str]] = Field(
+        default=None, description="Operation code(s)"
+    )
+    code_taxon: Optional[List[str]] = Field(default=None, description="Taxon code(s)")
     nom_latin_taxon: Optional[List[str]] = Field(
-        None, description="Latin taxon name(s)"
+        default=None, description="Latin taxon name(s)"
     )
     nom_commun_taxon: Optional[List[str]] = Field(
-        None, description="Common taxon name(s)"
+        default=None, description="Common taxon name(s)"
     )
-    date_operation_min: Optional[str] = Field(None, description="Min operation date")
-    date_operation_max: Optional[str] = Field(None, description="Max operation date")
+    date_operation_min: Optional[str] = Field(
+        default=None, description="Min operation date"
+    )
+    date_operation_max: Optional[str] = Field(
+        default=None, description="Max operation date"
+    )
     taille_individu_min: Optional[int] = Field(
-        None, description="Min individual size (mm)"
+        default=None, description="Min individual size (mm)"
     )
     taille_individu_max: Optional[int] = Field(
-        None, description="Max individual size (mm)"
+        default=None, description="Max individual size (mm)"
     )
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -286,25 +308,33 @@ class ObservationPoissonParams(BaseModel):
 class OperationPoissonParams(BaseModel):
     """Query parameters for fish sampling operations."""
 
-    code_station: Optional[List[str]] = Field(None, description="Station code(s)")
-    code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+    code_station: Optional[List[str]] = Field(
+        default=None, description="Station code(s)"
     )
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_operation: Optional[List[str]] = Field(None, description="Operation code(s)")
-    date_operation_min: Optional[str] = Field(None, description="Min operation date")
-    date_operation_max: Optional[str] = Field(None, description="Max operation date")
+    code_departement: Optional[List[str]] = Field(
+        default=None, description="Department code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_operation: Optional[List[str]] = Field(
+        default=None, description="Operation code(s)"
+    )
+    date_operation_min: Optional[str] = Field(
+        default=None, description="Min operation date"
+    )
+    date_operation_max: Optional[str] = Field(
+        default=None, description="Max operation date"
+    )
     protocole_peche: Optional[List[str]] = Field(
-        None, description="Fishing protocol(s)"
+        default=None, description="Fishing protocol(s)"
     )
     operation_sans_poisson: Optional[bool] = Field(
-        None, description="Operations without fish"
+        default=None, description="Operations without fish"
     )
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[float] = Field(None, description="Search radius in km")
+    distance: Optional[float] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")

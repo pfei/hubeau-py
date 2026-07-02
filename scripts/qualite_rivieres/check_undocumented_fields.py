@@ -1,5 +1,5 @@
 import sys
-from typing import Any
+from typing import Any, cast
 
 import httpx
 from pydantic import BaseModel
@@ -12,7 +12,7 @@ def fetch_sample(url: str, n: int = 10, **params: Any) -> list[dict[str, Any]]:
     data = resp.json().get("data", [])
     if not isinstance(data, list):
         return []
-    return data
+    return cast(list[dict[str, Any]], data)
 
 
 def get_model_fields(model: type[BaseModel]) -> set[str]:

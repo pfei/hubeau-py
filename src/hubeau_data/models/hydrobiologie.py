@@ -136,23 +136,33 @@ class StationHydrobioParams(BaseModel):
     """Query parameters for hydrobiological stations."""
 
     code_station_hydrobio: Optional[List[str]] = Field(
-        None, description="Station code(s)"
+        default=None, description="Station code(s)"
     )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_cours_eau: Optional[List[str]] = Field(None, description="Watercourse code(s)")
-    code_masse_eau: Optional[List[str]] = Field(None, description="Water body code(s)")
-    codes_indices: Optional[List[str]] = Field(None, description="Index code(s)")
-    codes_supports: Optional[List[str]] = Field(None, description="Support code(s)")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_cours_eau: Optional[List[str]] = Field(
+        default=None, description="Watercourse code(s)"
+    )
+    code_masse_eau: Optional[List[str]] = Field(
+        default=None, description="Water body code(s)"
+    )
+    codes_indices: Optional[List[str]] = Field(
+        default=None, description="Index code(s)"
+    )
+    codes_supports: Optional[List[str]] = Field(
+        default=None, description="Support code(s)"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="asc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[int] = Field(None, description="Search radius in km")
+    distance: Optional[int] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -161,35 +171,46 @@ class IndiceHydrobioParams(BaseModel):
     """Query parameters for hydrobiological indices."""
 
     code_station_hydrobio: Optional[List[str]] = Field(
-        None, description="Station code(s)"
+        default=None, description="Station code(s)"
     )
     code_indice: Optional[List[str]] = Field(
-        None, description="Index code(s): 1000=IBGN, 2928=IBMR, 5856=IBD, 7036=IPR"
+        default=None,
+        description="Index code(s): 1000=IBGN, 2928=IBMR, 5856=IBD, 7036=IPR",
     )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_cours_eau: Optional[List[str]] = Field(None, description="Watercourse code(s)")
-    code_support: Optional[List[str]] = Field(None, description="Support code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_cours_eau: Optional[List[str]] = Field(
+        default=None, description="Watercourse code(s)"
+    )
+    code_support: Optional[List[str]] = Field(
+        default=None, description="Support code(s)"
+    )
     code_qualification: Optional[List[str]] = Field(
-        None, description="Qualification code(s)"
+        default=None, description="Qualification code(s)"
     )
     date_debut_prelevement: Optional[str] = Field(
-        None, description="Start date (YYYY-MM-DD)"
+        default=None, description="Start date (YYYY-MM-DD)"
     )
     date_fin_prelevement: Optional[str] = Field(
-        None, description="End date (YYYY-MM-DD)"
+        default=None, description="End date (YYYY-MM-DD)"
     )
-    resultat_indice_min: Optional[float] = Field(None, description="Min index value")
-    resultat_indice_max: Optional[float] = Field(None, description="Max index value")
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    resultat_indice_min: Optional[float] = Field(
+        default=None, description="Min index value"
+    )
+    resultat_indice_max: Optional[float] = Field(
+        default=None, description="Max index value"
+    )
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[int] = Field(None, description="Search radius in km")
+    distance: Optional[int] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")
 
@@ -198,33 +219,41 @@ class TaxonHydrobioParams(BaseModel):
     """Query parameters for hydrobiological taxon lists."""
 
     code_station_hydrobio: Optional[List[str]] = Field(
-        None, description="Station code(s)"
+        default=None, description="Station code(s)"
     )
-    code_appel_taxon: Optional[List[str]] = Field(None, description="Taxon code(s)")
+    code_appel_taxon: Optional[List[str]] = Field(
+        default=None, description="Taxon code(s)"
+    )
     code_departement: Optional[List[str]] = Field(
-        None, description="Department code(s)"
+        default=None, description="Department code(s)"
     )
-    code_commune: Optional[List[str]] = Field(None, description="Commune code(s)")
-    code_region: Optional[List[str]] = Field(None, description="Region code(s)")
-    code_bassin: Optional[List[str]] = Field(None, description="Basin code(s)")
-    code_cours_eau: Optional[List[str]] = Field(None, description="Watercourse code(s)")
-    code_support: Optional[List[str]] = Field(None, description="Support code(s)")
+    code_commune: Optional[List[str]] = Field(
+        default=None, description="Commune code(s)"
+    )
+    code_region: Optional[List[str]] = Field(default=None, description="Region code(s)")
+    code_bassin: Optional[List[str]] = Field(default=None, description="Basin code(s)")
+    code_cours_eau: Optional[List[str]] = Field(
+        default=None, description="Watercourse code(s)"
+    )
+    code_support: Optional[List[str]] = Field(
+        default=None, description="Support code(s)"
+    )
     code_qualification: Optional[List[str]] = Field(
-        None, description="Qualification code(s)"
+        default=None, description="Qualification code(s)"
     )
     code_type_resultat: Optional[List[str]] = Field(
-        None, description="Result type code(s)"
+        default=None, description="Result type code(s)"
     )
     date_debut_prelevement: Optional[str] = Field(
-        None, description="Start date (YYYY-MM-DD)"
+        default=None, description="Start date (YYYY-MM-DD)"
     )
     date_fin_prelevement: Optional[str] = Field(
-        None, description="End date (YYYY-MM-DD)"
+        default=None, description="End date (YYYY-MM-DD)"
     )
-    size: Optional[int] = Field(None, ge=1, le=20000)
-    sort: Optional[str] = Field("desc", pattern="^(asc|desc)$")
+    size: Optional[int] = Field(default=None, ge=1, le=20000)
+    sort: Optional[str] = Field(default="desc", pattern="^(asc|desc)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    distance: Optional[int] = Field(None, description="Search radius in km")
+    distance: Optional[int] = Field(default=None, description="Search radius in km")
 
     model_config = ConfigDict(extra="allow")

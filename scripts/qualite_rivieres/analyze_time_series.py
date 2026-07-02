@@ -119,7 +119,7 @@ def build_param_stats(
 
         param_dates.setdefault(param, []).append(date)
 
-    candidates = []
+    candidates: list[dict[str, object]] = []
     for param, dates in param_dates.items():
         if not dates:
             continue

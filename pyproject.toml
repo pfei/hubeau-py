@@ -87,7 +87,6 @@ select = ["E", "F", "I"]
 known-first-party = ["hubeau_data"]
 
 [tool.pyright]
-include = ["src"]
 pythonVersion = "3.13"
 typeCheckingMode = "strict"
 venvPath = "."
